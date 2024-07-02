@@ -1,0 +1,14 @@
+[
+    {
+        "model": "users.user",
+        "pk": 1,
+        "fields": {
+            "email": "testuser@example.com",
+            "password": "jibsbsainiu12313!!!2!313",
+            "phone": "123456789",
+            "city": "Moscow",
+            "is_active": true,
+            "is_staff": false
+        }
+    }
+]

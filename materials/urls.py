@@ -10,5 +10,6 @@ urlpatterns = [
     path('', include(router.urls)),
     path('lessons/', LessonListCreateAPIView.as_view(), name='lesson-list-create'),
     path('lessons/<int:pk>/', LessonDetailView.as_view(), name='lesson-detail'),
-
+    path('courses/<int:course_pk>/lessons/', LessonListCreateAPIView.as_view(), name='lesson-list-create'),
+    path('courses/<int:course_pk>/lessons/<int:pk>/', LessonDetailView.as_view(), name='lesson-detail'),
 ]
