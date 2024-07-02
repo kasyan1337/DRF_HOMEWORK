@@ -1,9 +1,9 @@
 from django_filters import rest_framework as filters
-from rest_framework import generics
+from rest_framework import generics, permissions
 from rest_framework.filters import OrderingFilter
 
-from users.models import Payment
-from users.serializers import PaymentSerializer
+from users.models import Payment, User
+from users.serializers import PaymentSerializer, RegisterSerializer, UserSerializer
 
 
 # Create your views here.
@@ -25,3 +25,21 @@ class PaymentListView(generics.ListCreateAPIView):
     filter_backends = [filters.DjangoFilterBackend, OrderingFilter]
     filterset_class = PaymentFilter
     ordering_fields = ['payment_date']
+
+
+class RegisterView(generics.CreateAPIView):
+    queryset = User.objects.all()
+    serializer_class = RegisterSerializer
+    permission_classes = [permissions.AllowAny]
+
+
+class UserListView(generics.ListAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+
+class UserDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    permission_classes = [permissions.IsAuthenticated]
