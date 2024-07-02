@@ -1,8 +1,11 @@
 from django_filters import rest_framework as filters
-from rest_framework import generics, permissions
+from rest_framework import generics, permissions, viewsets
 from rest_framework.filters import OrderingFilter
 
+from materials.models import Course, Lesson
+from materials.serializers import CourseSerializer, LessonSerializer
 from users.models import Payment, User
+from users.permissions import IsModerator, IsOwner
 from users.serializers import PaymentSerializer, RegisterSerializer, UserSerializer
 
 
@@ -43,3 +46,29 @@ class UserDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
     permission_classes = [permissions.IsAuthenticated]
+
+
+class CourseViewSet(viewsets.ModelViewSet):
+    queryset = Course.objects.all()
+    serializer_class = CourseSerializer
+
+    def get_permissions(self):
+        if self.action in ['list', 'retrieve', 'update', 'partial_update']:
+            self.permission_classes = [permissions.IsAuthenticated, permissions.IsAdminUser, IsModerator,
+                                       IsOwner]
+        elif self.action in ['create', 'destroy']:
+            self.permission_classes = [permissions.IsAuthenticated, permissions.IsAdminUser, IsOwner]
+        return [permission() for permission in self.permission_classes]
+
+
+class LessonViewSet(viewsets.ModelViewSet):
+    queryset = Lesson.objects.all()
+    serializer_class = LessonSerializer
+
+    def get_permissions(self):
+        if self.action in ['list', 'retrieve', 'update', 'partial_update']:
+            self.permission_classes = [permissions.IsAuthenticated, permissions.IsAdminUser, IsModerator,
+                                       IsOwner]
+        elif self.action in ['create', 'destroy']:
+            self.permission_classes = [permissions.IsAuthenticated, permissions.IsAdminUser, IsOwner]
+        return [permission() for permission in self.permission_classes]

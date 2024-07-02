@@ -1,15 +1,36 @@
 [
-    {
-        "model": "users.user",
-        "pk": 1,
-        "fields": {
-            "email": "testuser@example.com",
-            "username": "testuser",
-            "password": "jibsbsainiu12313!!!2!313",
-            "phone": "123456789",
-            "city": "Moscow",
-            "is_active": true,
-            "is_staff": false
-        }
+  {
+    "model": "users.user",
+    "pk": 1,
+    "fields": {
+      "email": "testuser@example.com",
+      "username": "testuser",
+      "password": "jibsbsainiu12313!!!2!313",
+      "phone": "123456789",
+      "city": "Moscow",
+      "is_active": true,
+      "is_staff": false,
+      "groups": [
+        2
+      ],
+      "user_permissions": []
     }
+  },
+  {
+    "model": "users.user",
+    "pk": 2,
+    "fields": {
+      "email": "moderator@example.com",
+      "username": "moderator",
+      "password": "jibsbsainiu12313!!!2!313",
+      "phone": "123456789",
+      "city": "Moscow",
+      "is_active": true,
+      "is_staff": false,
+      "groups": [
+        1
+      ],
+      "user_permissions": []
+    }
+  }
 ]
