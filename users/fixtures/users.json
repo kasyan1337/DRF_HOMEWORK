@@ -4,6 +4,7 @@
         "pk": 1,
         "fields": {
             "email": "testuser@example.com",
+            "username": "testuser",
             "password": "jibsbsainiu12313!!!2!313",
             "phone": "123456789",
             "city": "Moscow",
