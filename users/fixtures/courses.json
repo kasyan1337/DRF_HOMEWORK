@@ -1,11 +1,22 @@
 [
-    {
-        "model": "materials.course",
-        "pk": 1,
-        "fields": {
-            "title": "Introduction to Python",
-            "preview": "course_previews/python_intro.jpg",
-            "description": "A basic course on Python programming."
-        }
+  {
+    "model": "materials.course",
+    "pk": 1,
+    "fields": {
+      "title": "Introduction to Python",
+      "preview": "course_previews/python_intro.jpg",
+      "description": "A basic course on Python programming.",
+      "owner": 1
     }
+  },
+  {
+    "model": "materials.course",
+    "pk": 2,
+    "fields": {
+      "title": "Introduction to Django",
+      "preview": "course_previews/python_intro.jpg",
+      "description": "A basic course on Python programming.",
+      "owner": 1
+    }
+  }
 ]

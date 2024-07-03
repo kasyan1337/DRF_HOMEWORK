@@ -1,24 +1,26 @@
 [
-    {
-        "model": "materials.lesson",
-        "pk": 1,
-        "fields": {
-            "title": "Lesson 1",
-            "description": "Introduction to Python - Lesson 1",
-            "preview": "lesson_previews/lesson1.jpg",
-            "video_url": "http://example.com/video1.mp4",
-            "course": 1
-        }
-    },
-    {
-        "model": "materials.lesson",
-        "pk": 2,
-        "fields": {
-            "title": "Lesson 2",
-            "description": "Introduction to Python - Lesson 2",
-            "preview": "lesson_previews/lesson2.jpg",
-            "video_url": "http://example.com/video2.mp4",
-            "course": 1
-        }
+  {
+    "model": "materials.lesson",
+    "pk": 1,
+    "fields": {
+      "title": "Lesson 1",
+      "description": "Introduction to Python - Lesson 1",
+      "preview": "lesson_previews/lesson1.jpg",
+      "video_url": "http://example.com/video1.mp4",
+      "course": 1,
+      "owner": 1
     }
+  },
+  {
+    "model": "materials.lesson",
+    "pk": 2,
+    "fields": {
+      "title": "Lesson 2",
+      "description": "Introduction to Python - Lesson 2",
+      "preview": "lesson_previews/lesson2.jpg",
+      "video_url": "http://example.com/video2.mp4",
+      "course": 1,
+      "owner": 1
+    }
+  }
 ]
