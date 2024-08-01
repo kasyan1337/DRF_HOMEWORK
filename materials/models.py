@@ -1,6 +1,7 @@
 from django.db import models
 
 from config import settings
+from materials.validators import validate_video_link
 
 
 # Create your models here.
@@ -10,6 +11,8 @@ class Course(models.Model):
     preview = models.ImageField(upload_to='course_previews/', blank=True, null=True)
     description = models.TextField()
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    video_link = models.URLField(validators=[validate_video_link])
+
 
     def __str__(self):
         return self.title

@@ -4,3 +4,4 @@ django-filter
 djangorestframework-simplejwt
 psycopg2-binary
 django-environ
+coverage
