@@ -7,3 +7,4 @@ django-environ
 coverage
 drf-yasg
 black
+stripe
