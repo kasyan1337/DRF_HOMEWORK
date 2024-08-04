@@ -13,13 +13,20 @@ from users.serializers import PaymentSerializer, RegisterSerializer, UserSeriali
 
 
 class PaymentFilter(filters.FilterSet):
-    paid_course = filters.NumberFilter(field_name='paid_course__id')
-    paid_lesson = filters.NumberFilter(field_name='paid_lesson__id')
-    payment_method = filters.CharFilter(field_name='payment_method')
+    paid_course = filters.NumberFilter(field_name="paid_course__id")
+    paid_lesson = filters.NumberFilter(field_name="paid_lesson__id")
+    payment_method = filters.CharFilter(field_name="payment_method")
 
     class Meta:
         model = Payment
-        fields = ['user', 'payment_date', 'paid_course', 'paid_lesson', 'amount', 'payment_method']
+        fields = [
+            "user",
+            "payment_date",
+            "paid_course",
+            "paid_lesson",
+            "amount",
+            "payment_method",
+        ]
 
 
 class PaymentListView(generics.ListCreateAPIView):
@@ -27,7 +34,7 @@ class PaymentListView(generics.ListCreateAPIView):
     serializer_class = PaymentSerializer
     filter_backends = [filters.DjangoFilterBackend, OrderingFilter]
     filterset_class = PaymentFilter
-    ordering_fields = ['payment_date']
+    ordering_fields = ["payment_date"]
     permission_classes = [permissions.IsAuthenticated]
 
 

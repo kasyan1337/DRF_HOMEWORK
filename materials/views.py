@@ -17,13 +17,13 @@ class CourseViewSet(viewsets.ModelViewSet):
     pagination_class = CustomPagination
 
     def get_permissions(self):
-        if self.action in ['list', 'retrieve']:
+        if self.action in ["list", "retrieve"]:
             self.permission_classes = [IsAuthenticated]
-        elif self.action in ['update', 'partial_update']:
+        elif self.action in ["update", "partial_update"]:
             self.permission_classes = [IsAuthenticated, IsOwner | IsModerator]
-        elif self.action == 'destroy':
+        elif self.action == "destroy":
             self.permission_classes = [IsAuthenticated, IsOwner, ~IsModerator]
-        elif self.action == 'create':
+        elif self.action == "create":
             self.permission_classes = [IsAuthenticated, ~IsModerator]
         return [permission() for permission in self.permission_classes]
 
@@ -37,13 +37,13 @@ class LessonViewSet(viewsets.ModelViewSet):
     pagination_class = CustomPagination
 
     def get_permissions(self):
-        if self.action in ['list', 'retrieve']:
+        if self.action in ["list", "retrieve"]:
             self.permission_classes = [IsAuthenticated]
-        elif self.action in ['update', 'partial_update']:
+        elif self.action in ["update", "partial_update"]:
             self.permission_classes = [IsAuthenticated, IsOwner | IsModerator]
-        elif self.action == 'destroy':
+        elif self.action == "destroy":
             self.permission_classes = [IsAuthenticated, IsOwner, ~IsModerator]
-        elif self.action == 'create':
+        elif self.action == "create":
             self.permission_classes = [IsAuthenticated, ~IsModerator]
         return [permission() for permission in self.permission_classes]
 
@@ -66,15 +66,15 @@ class SubscriptionView(APIView):
 
     def post(self, request, *args, **kwargs):
         user = request.user
-        course_id = request.data.get('course_id')
+        course_id = request.data.get("course_id")
         course_item = get_object_or_404(Course, id=course_id)
 
         subs_items = Subscription.objects.filter(user=user, course=course_item)
 
         if subs_items.exists():
             subs_items.delete()
-            message = 'You have successfully unsubscribed from the course!'
+            message = "You have successfully unsubscribed from the course!"
         else:
             Subscription.objects.create(user=user, course=course_item)
-            message = 'You have successfully subscribed to the course!'
-        return Response({'message': message})
+            message = "You have successfully subscribed to the course!"
+        return Response({"message": message})
