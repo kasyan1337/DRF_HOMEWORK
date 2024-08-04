@@ -5,3 +5,6 @@ djangorestframework-simplejwt
 psycopg2-binary
 django-environ
 coverage
+drf-yasg
+black
+stripe
