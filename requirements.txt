@@ -8,3 +8,6 @@ coverage
 drf-yasg
 black
 stripe
+celery
+django-celery-beat
+redis
