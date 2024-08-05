@@ -5,7 +5,7 @@ from .views import (
     CourseViewSet,
     LessonDetailView,
     LessonListCreateAPIView,
-    SubscriptionView, CreateProductView, CreatePriceView, CreateCheckoutSessionView,
+    SubscriptionView, CreateCheckoutSessionView,
 )
 
 router = DefaultRouter()
@@ -26,7 +26,5 @@ urlpatterns = [
         name="lesson-detail",
     ),
     path("subscribe/", SubscriptionView.as_view(), name="subscribe"),
-    path('create-product/', CreateProductView.as_view(), name='create-product'),
-    path('create-price/', CreatePriceView.as_view(), name='create-price'),
     path('create-checkout-session/', CreateCheckoutSessionView.as_view(), name='create-checkout-session'),
 ]
