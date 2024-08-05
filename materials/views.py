@@ -1,16 +1,16 @@
-# Create your views here.
 from django.shortcuts import get_object_or_404
-from rest_framework import viewsets, generics, status
+from rest_framework import viewsets, status, generics
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from datetime import timedelta, timezone
 
 from materials.models import Course, Lesson, Subscription, Payment
 from materials.paginators import CustomPagination
 from materials.serializers import LessonSerializer, CourseSerializer
 from materials.services import create_product, create_price, create_checkout_session
 from users.permissions import IsOwner, IsModerator
-
+from users.tasks import send_course_update_email
 
 class CourseViewSet(viewsets.ModelViewSet):
     queryset = Course.objects.all()
@@ -31,6 +31,19 @@ class CourseViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
 
+    def update(self, request, *args, **kwargs):
+        partial = kwargs.pop('partial', False)
+        instance = self.get_object()
+        serializer = self.get_serializer(instance, data=request.data, partial=partial)
+        serializer.is_valid(raise_exception=True)
+        self.perform_update(serializer)
+
+        # Trigger email notification task
+        subscribers = instance.subscriptions.all()
+        user_emails = [sub.user.email for sub in subscribers]
+        send_course_update_email.delay(instance.id, user_emails)
+
+        return Response(serializer.data)
 
 class LessonViewSet(viewsets.ModelViewSet):
     queryset = Lesson.objects.all()
@@ -79,7 +92,6 @@ class SubscriptionView(APIView):
             Subscription.objects.create(user=user, course=course_item)
             message = "You have successfully subscribed to the course!"
         return Response({"message": message})
-
 
 class CreateCheckoutSessionView(APIView):
     permission_classes = [IsAuthenticated]

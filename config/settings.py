@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     "django_filters",
     "rest_framework_simplejwt.token_blacklist",
     "drf_yasg",
+    'django_celery_beat',
 ]
 
 REST_FRAMEWORK = {
@@ -156,6 +157,7 @@ SIMPLE_JWT = {
     "AUTH_HEADER_TYPES": ("Bearer",),
     "AUTH_TOKEN_CLASSES": ("rest_framework_simplejwt.tokens.AccessToken",),
 }
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 AUTH_USER_MODEL = "users.User"
 
@@ -183,3 +185,12 @@ CELERY_TASK_TIME_LIMIT = 30 * 60
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
+
+from celery.schedules import crontab
+
+CELERY_BEAT_SCHEDULE = {
+    'check_inactive_users': {
+        'task': 'users.tasks.check_inactive_users',
+        'schedule': crontab(hour=0, minute=0),  # Everyday midnight
+    },
+}

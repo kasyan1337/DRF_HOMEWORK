@@ -27,4 +27,6 @@ urlpatterns = [
     ),
     path("subscribe/", SubscriptionView.as_view(), name="subscribe"),
     path('create-checkout-session/', CreateCheckoutSessionView.as_view(), name='create-checkout-session'),
+    # path('courses/<int:pk>/', CourseUpdateView.as_view(), name='course-update'),
+
 ]
