@@ -8,7 +8,7 @@ from .views import (
     RegisterView,
     UserListView,
     UserDetailView,
-    LoginView,
+    LoginView, SubscribeView,
 )
 
 urlpatterns = [
@@ -22,4 +22,6 @@ urlpatterns = [
     ),
     path("users/", UserListView.as_view(), name="user-list"),
     path("users/<int:pk>/", UserDetailView.as_view(), name="user-detail"),
+    path('subscribe/', SubscribeView.as_view(), name='subscribe'),
+
 ]

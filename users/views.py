@@ -1,10 +1,14 @@
+from django.shortcuts import get_object_or_404
 from django_filters import rest_framework as filters
-from rest_framework import generics, permissions
+from rest_framework import generics, permissions, status
 from rest_framework.filters import OrderingFilter
 from rest_framework.permissions import AllowAny
+from rest_framework.response import Response
+from rest_framework.views import APIView
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 
+from materials.models import Course, Subscription
 from users.models import Payment, User
 from users.serializers import PaymentSerializer, RegisterSerializer, UserSerializer
 
@@ -59,3 +63,18 @@ class UserDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
     permission_classes = [permissions.IsAuthenticated]
+
+
+class SubscribeView(APIView):
+
+    def post(self, request):
+        course_id = request.data.get('course_id')
+        course = get_object_or_404(Course, id=course_id)
+        user = request.user
+
+        subscription, created = Subscription.objects.get_or_create(user=user, course=course)
+
+        if created:
+            return Response({"message": "Subscribed successfully."}, status=status.HTTP_201_CREATED)
+        else:
+            return Response({"message": "Already subscribed."}, status=status.HTTP_200_OK)
