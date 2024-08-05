@@ -32,6 +32,7 @@ class CourseSerializer(serializers.ModelSerializer):
             "owner",
             "is_subscribed",
             "video_link",
+            "price",
         ]
 
     def get_lesson_count(self, obj):

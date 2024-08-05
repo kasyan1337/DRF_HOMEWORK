@@ -5,7 +5,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from materials.models import Course, Lesson, Subscription
+from materials.models import Course, Lesson, Subscription, Payment
 from materials.paginators import CustomPagination
 from materials.serializers import LessonSerializer, CourseSerializer
 from materials.services import create_product, create_price, create_checkout_session
@@ -81,25 +81,31 @@ class SubscriptionView(APIView):
         return Response({"message": message})
 
 
-class CreateProductView(APIView):
-    def post(self, request):
-        name = request.data.get('name')
-        product = create_product(name)
-        return Response(product, status=status.HTTP_201_CREATED)
-
-
-class CreatePriceView(APIView):
-    def post(self, request):
-        product_id = request.data.get('product_id')
-        amount = int(request.data.get('amount')) * 100  # Converting to cents
-        price = create_price(product_id, amount)
-        return Response(price, status=status.HTTP_201_CREATED)
-
-
 class CreateCheckoutSessionView(APIView):
+    permission_classes = [IsAuthenticated]
+
     def post(self, request):
-        price_id = request.data.get('price_id')
+        course_id = request.data.get('course_id')
         success_url = request.data.get('success_url')
         cancel_url = request.data.get('cancel_url')
-        session = create_checkout_session(price_id, success_url, cancel_url)
+
+        course = get_object_or_404(Course, id=course_id)
+
+        if course.price <= 0:
+            return Response({"error": "Course price must be greater than zero."}, status=status.HTTP_400_BAD_REQUEST)
+
+        amount_in_cents = int(course.price * 100)
+
+        product = create_product(course.title)
+        price = create_price(product['id'], amount_in_cents)  # Amount in cents
+
+        session = create_checkout_session(price['id'], success_url, cancel_url)
+
+        Payment.objects.create(
+            user=request.user,
+            course=course,
+            stripe_session_id=session['id'],
+            amount=course.price
+        )
+
         return Response(session, status=status.HTTP_201_CREATED)
