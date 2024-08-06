@@ -11,3 +11,4 @@ stripe
 celery
 django-celery-beat
 redis
+Pillow
